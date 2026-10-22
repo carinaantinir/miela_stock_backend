@@ -30,6 +30,8 @@ El registro público crea cuentas con rol user. La promoción a administrador se
 Estructura del proyecto
 
 miela_stock_backend/
+└── postman/
+    └── Miela_Stock.postman_collection.json
 ├── scripts/
 │   └── make-admin.js
 ├── src/
