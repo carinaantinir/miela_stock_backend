@@ -1,0 +1,269 @@
+        {
+    "info": {
+        "name": "Miela Stock - Backend API",
+        "description": "Colección de pruebas de la API RESTful de Miela Stock. Incluye autenticación JWT y operaciones CRUD de productos, clientes y proveedores.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+        {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+        }
+        ]
+    },
+    "variable": [
+        {
+        "key": "baseUrl",
+        "value": "http://localhost:4000"
+        },
+        {
+        "key": "token",
+        "value": ""
+        },
+        {
+        "key": "email",
+        "value": ""
+        },
+        {
+        "key": "password",
+        "value": ""
+        },
+        {
+        "key": "productId",
+        "value": ""
+        },
+        {
+        "key": "clientId",
+        "value": ""
+        },
+        {
+        "key": "supplierId",
+        "value": ""
+        }
+    ],
+    "item": [
+        {
+        "name": "01 - Login",
+        "request": {
+            "auth": {
+            "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/users/login",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"email\":\"{{email}}\",\"password\":\"{{password}}\"}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "02 - Obtener productos",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products"
+        }
+        },
+        {
+        "name": "03 - Obtener producto por ID",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+        }
+        },
+        {
+        "name": "04 - Crear producto",
+        "request": {
+            "method": "POST",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/products",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Producto de prueba\",\"category\":\"Té\",\"price\":1500,\"stock\":10}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "05 - Editar producto",
+        "request": {
+            "method": "PUT",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/products/{{productId}}",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Producto actualizado\",\"category\":\"Té\",\"price\":1800,\"stock\":15}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "06 - Eliminar producto",
+        "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+        }
+        },
+        {
+        "name": "07 - Obtener clientes",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/clients"
+        }
+        },
+        {
+        "name": "08 - Crear cliente",
+        "request": {
+            "method": "POST",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/clients",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Cliente de prueba\",\"email\":\"cliente.prueba@example.com\",\"phone\":\"2944123456\"}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "09 - Obtener cliente por ID",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/clients/{{clientId}}"
+        }
+        },
+        {
+        "name": "10 - Editar cliente",
+        "request": {
+            "method": "PUT",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/clients/{{clientId}}",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Cliente actualizado\",\"email\":\"cliente.actualizado@example.com\",\"phone\":\"2944123456\"}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "11 - Eliminar cliente",
+        "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/clients/{{clientId}}"
+        }
+        },
+        {
+        "name": "12 - Obtener proveedores",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/suppliers"
+        }
+        },
+        {
+        "name": "13 - Crear proveedor",
+        "request": {
+            "method": "POST",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/suppliers",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Proveedor de prueba\",\"contact\":\"Juan Pérez\",\"email\":\"proveedor.prueba@example.com\"}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "14 - Obtener proveedor por ID",
+        "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/suppliers/{{supplierId}}"
+        }
+        },
+        {
+        "name": "15 - Editar proveedor",
+        "request": {
+            "method": "PUT",
+            "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+            ],
+            "url": "{{baseUrl}}/api/suppliers/{{supplierId}}",
+            "body": {
+            "mode": "raw",
+            "raw": "{\"name\":\"Proveedor actualizado\",\"contact\":\"María López\",\"email\":\"proveedor.actualizado@example.com\"}",
+            "options": {
+                "raw": {
+                "language": "json"
+                }
+            }
+            }
+        }
+        },
+        {
+        "name": "16 - Eliminar proveedor",
+        "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/suppliers/{{supplierId}}"
+        }
+        }
+    ]
+    }
