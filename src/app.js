@@ -9,7 +9,7 @@ const clientRoutes = require("./routes/client.routes.js");
 const supplierRoutes = require("./routes/supplier.routes.js");
 
 const app = express();
-
+app.set("trust proxy", 1);
 app.use(cors());
 app.use(express.json({ limit: "100kb" }));
 
