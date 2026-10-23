@@ -191,7 +191,7 @@ Las pruebas incluyen:
 La colección de Postman está incluida en el repositorio:
 
 ```text
-postman/Miela_Stock.postman_collection.json
+[Colección de Postman — Miela Stock](postman/Miela_Stock.postman_collection.json)
 ```
 
 ## Despliegue
