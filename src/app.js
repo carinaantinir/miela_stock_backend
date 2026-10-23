@@ -10,6 +10,12 @@ const supplierRoutes = require("./routes/supplier.routes.js");
 
 const app = express();
 app.set("trust proxy", 1);
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Miela Stock API funcionando correctamente"
+  });
+});
 app.use(cors());
 app.use(express.json({ limit: "100kb" }));
 
