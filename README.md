@@ -1,8 +1,8 @@
 # Miela Stock — Backend
 
-**Proyecto Integrador Final — Desarrollo Backend | ADA**
+**Proyecto Integrador Final — Desarrollo Backend | ADA — 2026**
 
-API REST para la gestión de inventarios, desarrollada con Node.js, Express y MongoDB.
+API REST para la gestión de inventario, desarrollada con Node.js, Express y MongoDB.
 
 Permite administrar productos, clientes y proveedores, e incorpora autenticación mediante JWT, protección de contraseñas con bcrypt, validación de datos y autorización basada en roles.
 
@@ -21,25 +21,39 @@ Permite administrar productos, clientes y proveedores, e incorpora autenticació
 
 ## Funcionalidades
 
-- API REST con operaciones CRUD.
-- Persistencia de productos, usuarios, clientes y proveedores.
-- Registro e inicio de sesión.
+- Registro e inicio de sesión de usuarios.
+- Operaciones CRUD de productos, clientes y proveedores.
+- Persistencia de datos en MongoDB.
 - Autenticación mediante JWT.
 - Roles `user` y `admin`.
-- Autorización y protección de rutas.
+- Protección de rutas y control de permisos.
 - Validación de datos y manejo de errores HTTP.
-- Limitación de solicitudes en endpoints de autenticación.
+- Limitación de solicitudes de autenticación.
 
 ## Permisos
 
-| Funcionalidad | Usuario (user) | Administrador (admin) |
+| Funcionalidad | Usuario (`user`) | Administrador (`admin`) |
 |---|:---:|:---:|
 | Consultar productos | Sí | Sí |
-| Crear, editar o eliminar productos | No | Sí |
+| Crear, actualizar y eliminar productos | No | Sí |
 | Consultar y administrar clientes | No | Sí |
 | Consultar y administrar proveedores | No | Sí |
 
-El registro público crea cuentas con rol `user`. La asignación del rol `admin` se realiza mediante un script de administración.
+El registro público crea cuentas con rol `user`. La asignación del rol `admin` se realiza por separado.
+
+## Enlaces del proyecto
+
+**Aplicación web — Vercel:**  
+https://miela-stock-frontend.vercel.app
+
+**API REST — Render:**  
+https://miela-stock-backend.onrender.com
+
+**Repositorio del frontend:**  
+https://github.com/carinaantinir/miela_stock_frontend
+
+**Repositorio del backend:**  
+https://github.com/carinaantinir/miela_stock_backend
 
 ## Estructura del proyecto
 
@@ -64,20 +78,6 @@ miela_stock_backend/
 └── README.md
 ```
 
-## Enlaces del proyecto
-
-**API publicada — Render:**  
-https://miela-stock-backend.onrender.com
-
-**Aplicación web — Vercel:**  
-https://miela-stock-frontend.vercel.app
-
-**Repositorio backend:**  
-https://github.com/carinaantinir/miela_stock_backend
-
-**Repositorio frontend:**  
-https://github.com/carinaantinir/miela_stock_frontend
-
 ## Instalación local
 
 ### Requisitos
@@ -101,8 +101,6 @@ pnpm install
 
 ### Variables de entorno
 
-El backend utiliza las siguientes variables:
-
 | Variable | Descripción |
 |---|---|
 | `MONGO_URI` | Cadena de conexión a MongoDB |
@@ -125,8 +123,9 @@ http://localhost:4000
 
 | Método | Ruta | Descripción | Acceso |
 |---|---|---|---|
-| POST | `/users/register` | Registrar usuario | Público |
-| POST | `/users/login` | Iniciar sesión | Público |
+| GET | `/` | Estado de la API | Público |
+| POST | `/users/register` | Registro de usuarios | Público |
+| POST | `/users/login` | Inicio de sesión | Público |
 | GET | `/api/products` | Consultar productos | Autenticado |
 | GET | `/api/products/:id` | Consultar producto por ID | Autenticado |
 | POST | `/api/products` | Crear producto | Administrador |
@@ -141,29 +140,75 @@ http://localhost:4000
 | PUT | `/api/suppliers/:id` | Actualizar proveedor | Administrador |
 | DELETE | `/api/suppliers/:id` | Eliminar proveedor | Administrador |
 
-El módulo de usuarios incluye operaciones administrativas protegidas mediante autorización por roles.
+El módulo de usuarios también implementa operaciones administrativas protegidas mediante autorización por roles.
+
+## Estado de la API — Health Check
+
+La API incorpora un endpoint público para verificar el estado del servidor desplegado en Render.
+
+**Endpoint:** `GET /`
+
+**URL:** https://miela-stock-backend.onrender.com/
+
+**Respuesta HTTP 200:**
+
+```json
+{
+  "status": "ok",
+  "message": "Miela Stock API funcionando correctamente"
+}
 
 ## Autenticación
 
 La API utiliza JSON Web Tokens para autenticar solicitudes.
 
-Después de iniciar sesión, las solicitudes a rutas protegidas incluyen la cabecera:
+Después de iniciar sesión, las solicitudes a rutas protegidas deben incluir la cabecera:
 
 ```http
 Authorization: Bearer <TOKEN_JWT>
 ```
 
-Las respuestas HTTP contemplan, entre otros, los siguientes estados:
+El middleware verifica el token, consulta el usuario correspondiente y comprueba sus permisos cuando la operación requiere acceso administrativo.
 
-| Código | Descripción |
-|---|---|
-| 200 | Solicitud exitosa |
-| 201 | Recurso creado |
-| 400 | Solicitud inválida |
-| 401 | Autenticación requerida o inválida |
-| 403 | Permisos insuficientes |
-| 404 | Recurso no encontrado |
-| 500 | Error interno del servidor |
+## Códigos de respuesta HTTP
+
+Los siguientes códigos y mensajes corresponden a las respuestas implementadas en `app.js`, los controladores de productos y usuarios, el controlador genérico de registros y el middleware de autenticación.
+
+| Código | Situación | Mensaje o respuesta |
+|---|---|---|
+| 200 | API disponible | Miela Stock API funcionando correctamente |
+| 200 | Inicio de sesión exitoso | Inicio de sesión correcto |
+| 200 | Consulta exitosa | Devuelve los registros solicitados |
+| 200 | Usuario actualizado | Usuario actualizado correctamente |
+| 200 | Cliente o proveedor actualizado | Registro actualizado correctamente |
+| 200 | Producto eliminado | Producto eliminado correctamente |
+| 200 | Cliente o proveedor eliminado | Registro eliminado correctamente |
+| 201 | Usuario registrado | Usuario registrado correctamente |
+| 201 | Producto creado | Devuelve el producto creado |
+| 201 | Cliente o proveedor creado | Registro creado correctamente |
+| 400 | ID de producto inválido | ID de producto inválido |
+| 400 | ID de usuario inválido | ID de usuario inválido |
+| 400 | ID de cliente o proveedor inválido | ID inválido |
+| 400 | Error de validación de Mongoose | Error de validación |
+| 400 | Actualización de registro sin campos | No se enviaron campos para actualizar |
+| 400 | Actualización de usuario sin campos | Debés enviar al menos un campo para actualizar |
+| 401 | Falta de autenticación | Se requiere autenticación |
+| 401 | Token vacío | Token no proporcionado |
+| 401 | Token inválido o vencido | Token inválido o vencido |
+| 401 | Usuario del token inexistente | La sesión ya no es válida |
+| 401 | Credenciales incorrectas | Credenciales inválidas |
+| 403 | Usuario sin permisos administrativos | Acceso reservado a administradores |
+| 403 | Eliminación de la propia cuenta administradora | No podés eliminar tu propia cuenta administradora |
+| 404 | Ruta inexistente | Ruta no encontrada |
+| 404 | Producto inexistente | Producto no encontrado |
+| 404 | Usuario inexistente | Usuario no encontrado |
+| 404 | Cliente o proveedor inexistente | Registro no encontrado |
+| 409 | Correo electrónico duplicado | El email ya está registrado |
+| 429 | Exceso de solicitudes de registro | Demasiadas solicitudes. Intentá nuevamente más tarde. |
+| 429 | Exceso de intentos de inicio de sesión | Demasiados intentos de inicio de sesión. Intentá más tarde. |
+| 500 | Error gestionado por el middleware global | Error interno del servidor |
+
+Algunas operaciones también devuelven el mensaje específico del error mediante `error.message`.
 
 ## Administración de usuarios
 
@@ -177,30 +222,17 @@ El script utiliza la conexión a MongoDB configurada mediante `MONGO_URI`.
 
 ## Pruebas con Postman
 
-Los endpoints y permisos se probaron mediante solicitudes HTTP utilizando Postman.
+Las pruebas de la API se realizaron mediante solicitudes HTTP utilizando Postman.
 
-Las pruebas incluyen:
+Incluyen operaciones CRUD, autenticación mediante JWT, validación de datos y verificación de permisos.
 
-- Registro e inicio de sesión.
-- Operaciones CRUD.
-- Autenticación con JWT.
-- Restricción de acceso sin token (401).
-- Restricción de permisos administrativos (403).
-- Validación de datos y respuestas de error.
+La colección está disponible en el repositorio:
 
-La colección de Postman está incluida en el repositorio:
-
-```text
-[Colección de Postman — Miela Stock](postman/Miela_Stock.postman_collection.json)
-```
+**[Colección de Postman — Miela Stock](postman/Miela_Stock.postman_collection.json)**
 
 ## Despliegue
 
-La API está desplegada en **Render** y conectada a **MongoDB Atlas**.
-
-El frontend está desarrollado con React y publicado en **Vercel**.
-
-**Arquitectura:**
+La aplicación utiliza una arquitectura cliente-servidor.
 
 ```text
 Frontend — React / Vercel
@@ -212,20 +244,21 @@ Backend — Node.js + Express / Render
 Base de datos — MongoDB Atlas
 ```
 
-Las aplicaciones se comunican mediante solicitudes HTTP/HTTPS.
+El frontend consume la API REST publicada en Render. El backend utiliza Mongoose para comunicarse con MongoDB Atlas.
+
+Las variables de entorno del backend se configuran en el servicio de Render.
 
 ## Seguridad
 
 - Contraseñas protegidas mediante bcrypt.
 - Autenticación mediante JWT.
-- Autorización según roles.
+- Autorización basada en roles.
 - Validación de solicitudes.
 - Protección de rutas administrativas.
-- Limitación de solicitudes de autenticación.
-- Gestión de configuración mediante variables de entorno.
+- Limitación de solicitudes en registro e inicio de sesión.
+- Configuración mediante variables de entorno.
 
 ## Autora
 
 **Carina Antiñir**  
- 
     ADA — 2026
