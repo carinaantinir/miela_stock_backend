@@ -258,6 +258,9 @@ Las variables de entorno del backend se configuran en el servicio de Render.
 - Limitación de solicitudes en registro e inicio de sesión.
 - Configuración mediante variables de entorno.
 
+## Entrega Final 
+Para la etapa final del Trabajo Práctico Integrador se incorporó documentación del proyecto utilizando un flujo de trabajo con Git y GitHub mediante una rama especifica, comité descriptivo Pull Request. 
+
 ## Autora
 
 **Carina Antiñir**  
